@@ -10,10 +10,6 @@
 
 #define sizeof_array(x) (sizeof(x) / sizeof(*x))
 
-#define DEFAULT_PROMPT 	"$ "
-#define DEFAULT_PATH 	"/bin:/usr/bin/:/sbin/:/usr/local/bin"
-#define DEFAULT_HOME 	"/"
-
 typedef struct command_t{
     	char **array;
     	unsigned int elements;
