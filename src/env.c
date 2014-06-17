@@ -74,12 +74,22 @@ char *get_env_var(char *name)
 	return p->var;
 }
 
+void show_env(void)
+{
+	env_var_t *p = sh_status.env->vars;
+	while(p != NULL){
+		fprintf(stdout, "%s:%s\n", p->name, p->var);
+		p = p->next;
+	}
+}
+
 void free_env_var(env_var_t *var)
 {
 	free(var->name);
 	free(var->var);
 	free(var);
 }
+
 
 void free_environ(void)
 {
