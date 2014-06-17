@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -10,6 +11,16 @@
 #include <readline/readline.h>
 
 #include <shell.h>
+#include <env.h>
+
+shell_t sh_status = {true, NULL, 0, NULL};
+
+char *copy_string(const char *str)
+{
+	char *new = calloc(1, strlen(str) + 1);
+	strncpy(new, str, strlen(str) + 1);
+	return new;
+}
 
 unsigned int count_token(char *string, const char *token_string)
 {
@@ -57,13 +68,8 @@ command_t *parse(char *line)
 int change_shell_dir(char *path)
 {
     	if(path == NULL)
-        	return chdir(home);
-    	return chdir(path);
-}
-
-void exit_shell(void)
-{
-    	exit(0);
+		return chdir(get_env_var("home"));
+	return chdir(path);
 }
 
 int execute_builtins(char **input)
@@ -79,7 +85,7 @@ int execute_builtins(char **input)
             		change_shell_dir(input[1]);
             		return 1;
         	case 1:
-            		exit_shell();
+			sh_status.running = false;
             		return 1;
     	}
     	return 0;
@@ -102,7 +108,7 @@ int execute_command(command_t *c)
             		return -1;
         	}
 
-    	setpgid(pid, shell_pid);
+	setpgid(pid, sh_status.shell_pid);
 
     	while(wait(&status) != pid)
         	;
@@ -114,13 +120,17 @@ int main(int argc, char **argv)
     	char *input;
     	command_t *c;
 
-    	shell_pid = getpid();
-    	tcsetpgrp(STDIN_FILENO, shell_pid);
+	sh_status.env = initialize_environ();
 
-    	home = getenv("HOME");
+	add_env_var("home", DEFAULT_HOME);
+	add_env_var("path", DEFAULT_PATH);
+	add_env_var("prompt", DEFAULT_PROMPT);
 
-    	while(1){
-        	input = readline(prompt);
+	sh_status.shell_pid = getpid();
+	tcsetpgrp(STDIN_FILENO, sh_status.shell_pid);
+
+	while(sh_status.running){
+		input = readline(DEFAULT_PROMPT);
 
 		if(!input){
 			fprintf(stderr, "Invalid input");
@@ -137,4 +147,8 @@ int main(int argc, char **argv)
         	execute_command(c);
 		free_command(c);
     	}
+
+	free_environ();
+
+	return 0;
 }
