@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 	tcsetpgrp(STDIN_FILENO, sh_status.shell_pid);
 
 	while(sh_status.running){
-		input = readline(DEFAULT_PROMPT);
+		input = readline(get_env_var("prompt"));
 
 		if(!input){
 			fprintf(stderr, "Invalid input");
