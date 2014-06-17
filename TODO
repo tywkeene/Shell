@@ -1,4 +1,8 @@
 short term:
+
+- Better error reporting for non-debug builds
+	i.e no 'error in file: function() line 1337'
+
 - readline history
 
 - some clean way to handle opening/closing/reading/writing files
@@ -11,11 +15,14 @@ short term:
 	i.e type 'mpla<TAB>' and get 'mplayer'
 
 long term:
+
+- A nice, small and clean configuration file
+
 - 'nameable command registers' for long annoying-to-type commands that can be called like:
 	$ reg a
 	..invokes long annoying command
 	or something like that. Basically alias support like in bash
 
-- Scripting language? Bash(like)? Lua?
+- Scripting language? Bash(like)? Lua? Lisp? (lol jk)
 
 - Colors!
