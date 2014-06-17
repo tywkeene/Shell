@@ -74,6 +74,22 @@ char *get_env_var(char *name)
 	return p->var;
 }
 
+char *do_replace(char *name)
+{ 
+	char *ret = NULL;
+	env_var_t *p;
+	env_var_t *next;
+
+	for(p = sh_status.env->vars; p != NULL; p = next){
+		if(strstr(name, p->name)){
+			ret = p->var;
+			break;
+		}
+		next = p->next;
+	}
+	return ret;
+}
+
 void show_env(void)
 {
 	env_var_t *p = sh_status.env->vars;
@@ -90,12 +106,11 @@ void free_env_var(env_var_t *var)
 	free(var);
 }
 
-
 void free_environ(void)
 {
 	env_var_t *p;
 	env_var_t *next;
-	for (p = sh_status.env->vars; p != NULL; p = next) {
+	for(p = sh_status.env->vars; p != NULL; p = next){
 		next = p->next;
 		free_env_var(p);
 	}

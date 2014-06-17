@@ -51,6 +51,7 @@ command_t *parse(char *line)
 {
 	unsigned int i;
 	char *cur_token;
+	char *replaced;
 	command_t *ret = malloc(sizeof(command_t));
 
 	ret->elements = count_token(line, " ");
@@ -58,8 +59,15 @@ command_t *parse(char *line)
 
 	cur_token = strtok(line, " ");
 	for(i = 0; i < ret->elements; i++){
-		ret->array[i] = malloc(strlen(cur_token) + 1);
-		strncpy(ret->array[i], cur_token, strlen(cur_token)  + 1);
+		if(cur_token[0] == '$'){
+			if(replaced = do_replace(cur_token))
+				ret->array[i] = copy_string(replaced);
+			else
+				ret->array[i] = copy_string(cur_token);
+			cur_token = strtok(NULL, " ");
+			continue;
+		}
+		ret->array[i] = copy_string(cur_token);
 		cur_token = strtok(NULL, " ");
 	}
 	return ret;
