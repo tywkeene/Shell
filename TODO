@@ -8,9 +8,6 @@ short term:
 - some clean way to handle opening/closing/reading/writing files
 	- readline history file
 
-- built-in environment variable subsitution
-	i.e echo $user would echo the user name instead of $user
-
 - command tab completion
 	i.e type 'mpla<TAB>' and get 'mplayer'
 
@@ -26,3 +23,7 @@ long term:
 - Scripting language? Bash(like)? Lua? Lisp? (lol jk)
 
 - Colors!
+
+DONE:
+- built-in environment variable subsitution
+	i.e echo $user would echo the user name instead of $user
