@@ -1,0 +1,21 @@
+short term:
+- readline history
+
+- some clean way to handle opening/closing/reading/writing files
+	- readline history file
+
+- built-in environment variable subsitution
+	i.e echo $user would echo the user name instead of $user
+
+- command tab completion
+	i.e type 'mpla<TAB>' and get 'mplayer'
+
+long term:
+- 'nameable command registers' for long annoying-to-type commands that can be called like:
+	$ reg a
+	..invokes long annoying command
+	or something like that. Basically alias support like in bash
+
+- Scripting language? Bash(like)? Lua?
+
+- Colors!
