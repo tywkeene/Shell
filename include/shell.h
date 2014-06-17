@@ -4,15 +4,15 @@
 #include <stdbool.h>
 
 #define report_error() fprintf(stderr, "[%s: %s():%d] %s\n", __FILE__, \
-        	__FUNCTION__, \
-        	__LINE__, \
-        	strerror(errno));
+		__FUNCTION__, \
+		__LINE__, \
+		strerror(errno));
 
 #define sizeof_array(x) (sizeof(x) / sizeof(*x))
 
 typedef struct command_t{
-    	char **array;
-    	unsigned int elements;
+	char **array;
+	unsigned int elements;
 }command_t;
 
 typedef struct shell_t{
