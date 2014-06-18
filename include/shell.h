@@ -5,10 +5,12 @@
 #include <signal.h>
 
 /*More verbose error reporting. Only works if DEBUG is defined at compile time*/
+#ifdef DEBUG
 #define report_error() fprintf(stderr, "[%s: %s():%d] %s\n", __FILE__, \
 		__FUNCTION__, \
 		__LINE__, \
 		strerror(errno));
+#endif
 
 #define sizeof_array(x) (sizeof(x) / sizeof(*x))
 
