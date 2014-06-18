@@ -2,3 +2,8 @@
 *.*.swp
 *.*.swo
 shell
+
+.patch_settings
+.patches/
+do-commit.sh
+do-tag.sh
