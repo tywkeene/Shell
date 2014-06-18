@@ -14,6 +14,7 @@
 #define ERR_NO_SUCH_COM 1
 #define ERR_NO_SUCH_FIL 2
 #define ERR_INVAL_INPUT 3
+#define ERR_SHELL_ERROR 4
 
 typedef struct command_t{
 	char **array;

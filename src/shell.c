@@ -18,7 +18,8 @@ shell_t sh_status = {true, NULL, 0, NULL};
 
 void shell_error(int err_type, const char *fmt, ...)
 {
-	static const char *err_str[] = {"No such environment variable", "No such command", "No such file"};
+	static const char *err_str[] = {"No such environment variable", "No such command", "No such file",
+		"Invalid input", "Shell error"};
 	va_list args;
 	va_start(args, fmt);
 	fflush(stdout);
@@ -143,6 +144,7 @@ int execute_command(command_t *c)
 	int status;
 
 	if((pid = fork()) == -1){
+		shell_error(ERR_SHELL_ERROR, "Could not fork %s", *c->array);
 #ifdef DEBUG
 		report_error();
 #endif
