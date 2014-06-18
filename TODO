@@ -1,5 +1,13 @@
 short term:
 
+- Code cleanup, move things to their own files if necessary
+
+- Comment everything
+
+- An actual readme/documentation/man file (maybe)
+
+- prompt environment variable parsing 
+
 - readline history
 
 - some clean way to handle opening/closing/reading/writing files
