@@ -51,7 +51,7 @@ char *to_upper_varname(char *name)
 	return out;
 }
 
-int set_sys_env_var(env_var_t *var)
+void set_sys_env_var(env_var_t *var)
 {
 	char *upper_name = to_upper_varname(var->name);
 

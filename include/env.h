@@ -20,7 +20,7 @@ env_var_t *alloc_env_var(char *name, char *new);
 environ_t *initialize_environ(void);
 char *to_lower_varname(char *name);
 char *to_upper_varname(char *name);
-int set_sys_env_var(env_var_t *var);
+void set_sys_env_var(env_var_t *var);
 void add_env_var(char *name, char *var);
 int set_env_var(char *name, char *set);
 char *get_env_var(char *name);
