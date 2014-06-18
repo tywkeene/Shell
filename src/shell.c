@@ -54,6 +54,8 @@ unsigned int count_token(char *string, const char *token_string)
 void free_command(command_t *command)
 {
 	int i;
+	if(!command)
+		return;
 
 	for(i = 0; i < command->elements; i++)
 		free(command->array[i]);
@@ -220,6 +222,8 @@ int main(int argc, char **argv)
 	}
 
 	gl = del_GetLine(gl);
+
+	free_command(c);
 	free_environ();
 
 	return 0;
