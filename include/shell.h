@@ -10,6 +10,10 @@
 
 #define sizeof_array(x) (sizeof(x) / sizeof(*x))
 
+#define ERR_NO_SUCH_VAR 0
+#define ERR_NO_SUCH_COM 1
+#define ERR_NO_SUCH_FIL 2
+
 typedef struct command_t{
 	char **array;
 	unsigned int elements;
@@ -22,6 +26,7 @@ typedef struct shell_t{
 	char *pwd;
 }shell_t;
 
+void shell_error(int err_type, const char *fmt, ...);
 char *copy_string(const char *str);
 unsigned int count_token(char *string, const char *token_string);
 void free_command(command_t *command);

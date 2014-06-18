@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
@@ -14,6 +15,21 @@
 #include <env.h>
 
 shell_t sh_status = {true, NULL, 0, NULL};
+
+void shell_error(int err_type, const char *fmt, ...)
+{
+	static const char *err_str[] = {"No such environment variable", "No such command", "No such file"};
+	va_list args;
+	va_start(args, fmt);
+	fflush(stdout);
+	fflush(stderr);
+	fprintf(stderr, "Shell error %d: ", err_type);
+	fprintf(stderr, "%s:", err_str[err_type]);
+	vfprintf(stderr, fmt, args);
+	fprintf(stderr, "\n");
+	fflush(stderr);
+	va_end(args);
+}
 
 char *copy_string(const char *str)
 {
