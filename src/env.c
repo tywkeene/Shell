@@ -58,8 +58,10 @@ int set_env_var(char *name, char *set)
 	if(p){
 		free(p->var);
 		p->var = copy_string(set);
-	}else
+	}else{
+		shell_error(ERR_NO_SUCH_VAR, "%s", name);
 		return -1;
+	}
 	return 0;
 }
 
@@ -71,6 +73,8 @@ char *get_env_var(char *name)
 			break;
 		p = p->next;
 	}
+	if(p == NULL)
+		shell_error(ERR_NO_SUCH_VAR, "%s", name);
 	return p->var;
 }
 

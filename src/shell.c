@@ -24,7 +24,7 @@ void shell_error(int err_type, const char *fmt, ...)
 	fflush(stdout);
 	fflush(stderr);
 	fprintf(stderr, "Shell error %d: ", err_type);
-	fprintf(stderr, "%s:", err_str[err_type]);
+	fprintf(stderr, "%s: ", err_str[err_type]);
 	vfprintf(stderr, fmt, args);
 	fprintf(stderr, "\n");
 	fflush(stderr);
@@ -149,6 +149,7 @@ int execute_command(command_t *c)
 
 	if(pid == 0)
 		if(execvp(*c->array, c->array) == -1){
+			shell_error(ERR_NO_SUCH_COM, "%s", *c->array);
 			report_error();
 			abort();
 			return -1;
@@ -179,7 +180,7 @@ int main(int argc, char **argv)
 		input = readline(get_env_var("prompt"));
 
 		if(!input){
-			fprintf(stderr, "Invalid input");
+			shell_error(ERR_INVAL_INPUT, NULL);
 			return -1;
 		}
 
