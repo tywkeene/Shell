@@ -1,8 +1,5 @@
 short term:
 
-- Better error reporting for non-debug builds
-	i.e no 'error in file: function() line 1337'
-
 - readline history
 
 - some clean way to handle opening/closing/reading/writing files
@@ -27,3 +24,5 @@ long term:
 DONE:
 - built-in environment variable subsitution
 	i.e echo $user would echo the user name instead of $user
+- Better error reporting for non-debug builds
+	i.e no 'error in file: function() line 1337'
