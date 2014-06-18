@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
@@ -28,6 +29,43 @@ environ_t *initialize_environ(void)
 	return env;
 }
 
+char *to_lower_varname(char *name)
+{
+	int i;
+	char *out = calloc(1, strlen(name) + 1);
+	ssize_t len = strlen(name);
+
+	for(i = 0; i < len; i++)
+		out[i] = (char) tolower((int) name[i]);
+	return out;
+}
+
+char *to_upper_varname(char *name)
+{
+	int i;
+	char *out = calloc(1, strlen(name) + 1);
+	ssize_t len = strlen(name);
+
+	for(i = 0; i < len; i++)
+		out[i] = (char) toupper((int) name[i]);
+	return out;
+}
+
+int set_sys_env_var(env_var_t *var)
+{
+	char *upper_name = to_upper_varname(var->name);
+
+	if(setenv(upper_name, var->var, 1) < 0){
+#ifdef DEBUG
+		report_error()
+#endif
+			shell_error(ERR_SHELL_ERROR, "Failed to set system environment \
+					variable from shell variable: %s\n", var->name);
+	}
+
+	free(upper_name);
+}
+
 void add_env_var(char *name, char *var)
 {
 	env_var_t *p = sh_status.env->vars;
@@ -45,6 +83,7 @@ void add_env_var(char *name, char *var)
 		p = new;
 		p->next = NULL;
 	}
+	set_sys_env_var(p)
 }
 
 int set_env_var(char *name, char *set)

@@ -1,8 +1,8 @@
 SHELL	     = /bin/sh
 CC	     = gcc
 FLAGS	     = -std=c11
-CFLAGS	     = -Werror -I./include
-DEBUGFLAGS   = -O0 -g -DDEBUG
+CFLAGS	     = -Werror -I./include -D_POSIX_C_SOURCE=200112L
+DEBUGFLAGS   = -O0 -g -DDEBUG -D_POSIX_C_SOURCE=200112L
 RELEASEFLAGS = -O2
 TARGET	     = shell
 SOURCES	     = $(shell echo src/*.c)
