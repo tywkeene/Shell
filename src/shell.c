@@ -106,30 +106,30 @@ int execute_builtins(char **input)
 		if(strncmp(input[0], builtins[i], strlen(builtins[i]) + 1) == 0)
 			break;
 	switch(i){
-	case 0:
+	case 0: /*cd*/
 		change_shell_dir(input[1]);
 		return 1;
-	case 1:
+	case 1: /*exit*/
 		sh_status.running = false;
 		return 1;
-	case 2:
+	case 2: /*show-env*/
 		show_env();
 		return 1;
-	case 3:
+	case 3: /*edit-env*/
 		if(!input[1] || !input[2]){
-			fprintf(stdout, "Usage: %s <var name> <var value>\n", input[0]);
+			fprintf(stdout, "Usage: %s <target var name> <new var value>\n", input[0]);
 			return 1;
 		}
 		set_env_var(input[1], input[2]);
 		return 1;
-	case 4:
+	case 4: /*add-env*/
 		if(!input[1] || !input[2]){
-			fprintf(stdout, "Usage: %s <var name> <var value>\n", input[0]);
+			fprintf(stdout, "Usage: %s <new var name> <new var value>\n", input[0]);
 			return 1;
 		}
 		add_env_var(input[1], input[2]);
 		return 1;
-	case 5:
+	case 5: /*show-builtins*/
 		for(i = 0; i < sizeof_array(builtins); i++)
 			fprintf(stdout, "%s ", builtins[i]);
 		fprintf(stdout, "\n");
