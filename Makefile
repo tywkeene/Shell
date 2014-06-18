@@ -9,7 +9,7 @@ SOURCES	     = $(shell echo src/*.c)
 HEADERS	     = $(shell echo include/*.h)
 OBJECTS	     = $(SOURCES:.c=.o)
 LIBCFLAGS    = 
-LIBS	     = -lreadline
+LIBS	     = -ltecla
 
 all: $(TARGET)
 

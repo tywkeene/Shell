@@ -8,8 +8,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-#include <readline/history.h>
-#include <readline/readline.h>
+#include <libtecla.h>
 
 #include <shell.h>
 #include <env.h>
@@ -172,10 +171,23 @@ int execute_command(command_t *c)
 	return 0;
 }
 
+void strip_newline(char *str)
+{
+	while(*str++)
+		if(*str == '\n')
+			*str = '\0';
+}
+
 int main(int argc, char **argv)
 {
 	char *input;
 	command_t *c;
+	GetLine *gl = new_GetLine(1024, 0);
+
+	if(!gl){
+		shell_error(ERR_SHELL_ERROR, "Could not initialize libtecla");
+		return -1;
+	}
 
 	sh_status.env = initialize_environ();
 
@@ -189,7 +201,8 @@ int main(int argc, char **argv)
 	SET_SIGNALS_SHELL
 
 	while(sh_status.running){
-		input = readline(get_env_var("prompt"));
+		input = gl_get_line(gl, get_env_var("prompt"), NULL, -1);
+		strip_newline(input);
 
 		if(!input){
 			shell_error(ERR_INVAL_INPUT, "Oops");
@@ -200,13 +213,13 @@ int main(int argc, char **argv)
 			continue;
 
 		c = parse(input);
-		free(input);
 		if(execute_builtins(c->array) == 1)
 			continue;
 		execute_command(c);
 		free_command(c);
 	}
 
+	gl = del_GetLine(gl);
 	free_environ();
 
 	return 0;
