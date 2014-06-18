@@ -47,7 +47,6 @@ typedef struct shell_t{
 	bool running;
 	struct environ_t *env;
 	pid_t shell_pid;
-	char *pwd;
 }shell_t;
 
 void shell_error(int err_type, const char *fmt, ...);

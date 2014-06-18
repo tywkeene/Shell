@@ -14,7 +14,7 @@
 #include <shell.h>
 #include <env.h>
 
-shell_t sh_status = {true, NULL, 0, NULL};
+shell_t sh_status = {true, NULL, 0};
 
 void shell_error(int err_type, const char *fmt, ...)
 {
