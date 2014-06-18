@@ -2,6 +2,7 @@
 #define SHELL_H
 
 #include <stdbool.h>
+#include <signal.h>
 
 #define report_error() fprintf(stderr, "[%s: %s():%d] %s\n", __FILE__, \
 		__FUNCTION__, \
@@ -9,6 +10,22 @@
 		strerror(errno));
 
 #define sizeof_array(x) (sizeof(x) / sizeof(*x))
+
+#define SET_SIGNALS_SHELL \
+	signal(SIGINT, SIG_IGN); \
+signal(SIGQUIT, SIG_IGN); \
+signal(SIGTSTP, SIG_IGN); \
+signal(SIGTTIN, SIG_IGN); \
+signal(SIGTTOU, SIG_IGN); \
+signal(SIGCHLD, SIG_DFL);
+
+#define SET_SIGNALS_PROC \
+	signal(SIGINT, SIG_DFL); \
+signal(SIGQUIT, SIG_DFL); \
+signal(SIGTSTP, SIG_DFL); \
+signal(SIGTTIN, SIG_DFL); \
+signal(SIGTTOU, SIG_DFL); \
+
 
 #define ERR_NO_SUCH_VAR 0
 #define ERR_NO_SUCH_COM 1
