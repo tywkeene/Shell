@@ -1,6 +1,7 @@
 #ifndef ENV_H
 #define ENV_H
 
+/*Default environment variables. Set right after the environment is initialized*/
 #define DEFAULT_PROMPT 	"$ "
 #define DEFAULT_PATH 	"/bin:/usr/bin/:/sbin/:/usr/local/bin"
 #define DEFAULT_HOME 	"/"

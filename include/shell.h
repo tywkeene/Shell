@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <signal.h>
 
+/*More verbose error reporting. Only works if DEBUG is defined at compile time*/
 #define report_error() fprintf(stderr, "[%s: %s():%d] %s\n", __FILE__, \
 		__FUNCTION__, \
 		__LINE__, \
@@ -11,6 +12,7 @@
 
 #define sizeof_array(x) (sizeof(x) / sizeof(*x))
 
+/*Ignore most signals since we're an interactive shell*/
 #define SET_SIGNALS_SHELL \
 	signal(SIGINT, SIG_IGN); \
 signal(SIGQUIT, SIG_IGN); \
@@ -19,6 +21,7 @@ signal(SIGTTIN, SIG_IGN); \
 signal(SIGTTOU, SIG_IGN); \
 signal(SIGCHLD, SIG_DFL);
 
+/*Set most signals back to default for spawned processes*/
 #define SET_SIGNALS_PROC \
 	signal(SIGINT, SIG_DFL); \
 signal(SIGQUIT, SIG_DFL); \
@@ -26,7 +29,7 @@ signal(SIGTSTP, SIG_DFL); \
 signal(SIGTTIN, SIG_DFL); \
 signal(SIGTTOU, SIG_DFL); \
 
-
+/*Error codes for shell_error() in shell.c*/
 #define ERR_NO_SUCH_VAR 0
 #define ERR_NO_SUCH_COM 1
 #define ERR_NO_SUCH_FIL 2
