@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 		input = readline(get_env_var("prompt"));
 
 		if(!input){
-			shell_error(ERR_INVAL_INPUT, NULL);
+			shell_error(ERR_INVAL_INPUT, "Oops");
 			return -1;
 		}
 
