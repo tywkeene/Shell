@@ -2,7 +2,7 @@ SHELL	     = /bin/sh
 CC	     = gcc
 FLAGS	     = -std=c11
 CFLAGS	     = -Werror -I./include
-DEBUGFLAGS   = -O0 -g
+DEBUGFLAGS   = -O0 -g -DDEBUG
 RELEASEFLAGS = -O2
 TARGET	     = shell
 SOURCES	     = $(shell echo src/*.c)

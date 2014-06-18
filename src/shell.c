@@ -143,14 +143,18 @@ int execute_command(command_t *c)
 	int status;
 
 	if((pid = fork()) == -1){
+#ifdef DEBUG
 		report_error();
+#endif
 		return -1;
 	}
 
 	if(pid == 0)
 		if(execvp(*c->array, c->array) == -1){
 			shell_error(ERR_NO_SUCH_COM, "%s", *c->array);
+#ifdef DEBUG
 			report_error();
+#endif
 			abort();
 			return -1;
 		}
