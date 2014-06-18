@@ -83,7 +83,7 @@ void add_env_var(char *name, char *var)
 		p = new;
 		p->next = NULL;
 	}
-	set_sys_env_var(p)
+	set_sys_env_var(p);
 }
 
 int set_env_var(char *name, char *set)
