@@ -44,8 +44,7 @@ unsigned int count_token(char *string, const char *token_string)
 	unsigned int count = 0;
 	char *token;
 	char *copy;
-	copy = malloc(strlen(string) + 1);
-	strncpy(copy, string, strlen(string) + 1);
+	copy = copy_string(string);
 	for(token = strtok(copy, token_string); token != NULL;
 			token = strtok(NULL, token_string))
 		count++;
