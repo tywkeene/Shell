@@ -51,18 +51,37 @@ char *to_upper_varname(char *name)
 	return out;
 }
 
-void set_sys_env_var(env_var_t *var)
+/*use getenv to add a built in environment variable from a system environment variable*/
+int import_sys_env_var(char *name)
+{
+	char *sys_var;
+	char *upper_name = to_upper_varname(name);
+	if((sys_var = getenv(upper_name)) == NULL){
+#ifdef DEBUG
+		report_error();
+#endif
+		shell_error(ERR_SHELL_ERROR, "Failed to import system \
+				environment variable %s\n", name);
+		free(upper_name);
+		return -1;
+	}else
+		add_env_var(name, sys_var);
+	free(upper_name);
+	return 0;
+}
+
+/*Use setenv to export a built in shell variable to the system environment*/
+void export_sys_env_var(env_var_t *var)
 {
 	char *upper_name = to_upper_varname(var->name);
 
 	if(setenv(upper_name, var->var, 1) < 0){
 #ifdef DEBUG
-		report_error()
+		report_error();
 #endif
-			shell_error(ERR_SHELL_ERROR, "Failed to set system environment \
-					variable from shell variable: %s\n", var->name);
+		shell_error(ERR_SHELL_ERROR, "Failed to set system environment \
+				variable from shell variable: %s\n", var->name);
 	}
-
 	free(upper_name);
 }
 
@@ -83,7 +102,6 @@ void add_env_var(char *name, char *var)
 		p = new;
 		p->next = NULL;
 	}
-	set_sys_env_var(p);
 }
 
 int set_env_var(char *name, char *set)

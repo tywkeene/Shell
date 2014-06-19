@@ -193,8 +193,8 @@ int main(int argc, char **argv)
 
 	sh_status.env = initialize_environ();
 
-	add_env_var("home", DEFAULT_HOME);
-	add_env_var("path", DEFAULT_PATH);
+	import_sys_env_var("home");
+	import_sys_env_var("path");
 	add_env_var("prompt", DEFAULT_PROMPT);
 
 	sh_status.shell_pid = getpid();
