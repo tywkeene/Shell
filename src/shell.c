@@ -44,7 +44,7 @@ command_t *parse(char *line)
 	cur_token = strtok(line, " ");
 	for(i = 0; i < ret->elements; i++){
 		if(cur_token[0] == '$'){
-			if(replaced = do_replace(cur_token))
+			if(replaced = do_var_name_substitution(cur_token))
 				ret->array[i] = copy_string(replaced);
 			else
 				ret->array[i] = copy_string(cur_token);

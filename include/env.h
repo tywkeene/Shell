@@ -23,7 +23,7 @@ int import_sys_env_var(char *name);
 void add_env_var(char *name, char *var);
 int set_env_var(char *name, char *set);
 char *get_env_var(char *name);
-char *do_replace(char *name);
+char *do_var_name_substitution(char *name);
 void show_env(void);
 void free_env_var(env_var_t *var);
 void free_environ(void);

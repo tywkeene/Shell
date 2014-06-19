@@ -113,7 +113,7 @@ char *get_env_var(char *name)
 	return p->var;
 }
 
-char *do_replace(char *name)
+char *do_var_name_substitution(char *name)
 { 
 	char *ret = NULL;
 	env_var_t *p;
