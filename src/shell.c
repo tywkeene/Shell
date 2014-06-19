@@ -38,6 +38,13 @@ char *copy_string(const char *str)
 	return new;
 }
 
+void strip_newline(char *str)
+{
+	while(*str++)
+		if(*str == '\n')
+			*str = '\0';
+}
+
 unsigned int count_token(char *string, const char *token_string)
 {
 	unsigned int count = 0;
@@ -70,6 +77,8 @@ command_t *parse(char *line)
 	char *cur_token;
 	char *replaced;
 	command_t *ret = malloc(sizeof(command_t));
+
+	strip_newline(line);
 
 	ret->elements = count_token(line, " ");
 	ret->array = calloc((ret->elements + 1), sizeof(char *));
@@ -173,13 +182,6 @@ int execute_command(command_t *c)
 	return 0;
 }
 
-void strip_newline(char *str)
-{
-	while(*str++)
-		if(*str == '\n')
-			*str = '\0';
-}
-
 int main(int argc, char **argv)
 {
 	char *input;
@@ -208,7 +210,6 @@ int main(int argc, char **argv)
 		if(!input || *input == '\n')
 			continue;
 
-		strip_newline(input);
 		c = parse(input);
 		if(execute_builtins(c->array) == 1)
 			continue;
