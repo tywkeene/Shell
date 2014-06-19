@@ -1,14 +1,11 @@
 short term:
 
-- Code cleanup, move things to their own files if necessary
-
 - Comment everything
-
-- An actual readme/documentation/man file (maybe)
+	- An actual readme/documentation/man file (maybe)
 
 - prompt environment variable parsing 
 
-- readline history
+- command history
 
 - some clean way to handle opening/closing/reading/writing files
 	- readline history file
@@ -34,3 +31,4 @@ DONE:
 	i.e echo $user would echo the user name instead of $user
 - Better error reporting for non-debug builds
 	i.e no 'error in file: function() line 1337'
+- Code cleanup, move things to their own files if necessary
