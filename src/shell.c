@@ -208,11 +208,6 @@ int main(int argc, char **argv)
 		if(!input || *input == '\n')
 			continue;
 
-		if(strlen(input) < 1){
-			free(input);
-			continue;
-		}
-
 		strip_newline(input);
 		c = parse(input);
 		if(execute_builtins(c->array) == 1)
