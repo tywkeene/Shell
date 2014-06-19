@@ -67,7 +67,8 @@ int change_shell_dir(char *path)
 int execute_builtins(char **input)
 {
 	int i;
-	static const char *builtins[] = {"cd", "exit", "show-env", "edit-env", "add-env", "show-builtins"};
+	static const char *builtins[] = {"cd", "exit", "show-env", "edit-env", "add-env", "show-builtins",
+		"export-var"};
 
 	for(i = 0; i < sizeof_array(builtins); i++)
 		if(strncmp(input[0], builtins[i], strlen(builtins[i]) + 1) == 0)
@@ -100,6 +101,13 @@ int execute_builtins(char **input)
 		for(i = 0; i < sizeof_array(builtins); i++)
 			fprintf(stdout, "%s ", builtins[i]);
 		fprintf(stdout, "\n");
+		return 1;
+	case 6:
+		if(!input[1]){
+			fprintf(stdout, "Usage: %s <name of built-in var to export>\n", input[0]);
+			return 1;
+		}
+		export_sys_env_var(input[1]);
 		return 1;
 	}
 	return 0;

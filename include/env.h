@@ -18,8 +18,9 @@ typedef struct environ_t{
 
 env_var_t *alloc_env_var(char *name, char *new);
 environ_t *initialize_environ(void);
-void export_sys_env_var(env_var_t *var);
+void export_sys_env_var(char *name);
 int import_sys_env_var(char *name);
+env_var_t *find_env_var(char *name);
 void add_env_var(char *name, char *var);
 int set_env_var(char *name, char *set);
 char *get_env_var(char *name);

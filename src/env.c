@@ -48,18 +48,38 @@ int import_sys_env_var(char *name)
 	return 0;
 }
 
-/*Use setenv to export a built in shell variable to the system environment*/
-void export_sys_env_var(env_var_t *var)
+env_var_t *find_env_var(char *name)
 {
-	char *upper_name = to_upper_varname(var->name);
+	env_var_t *p;
+	env_var_t *next;
+	for(p = sh_status.env->vars; p != NULL; p = next){
+		next = p->next;
+		if(strncmp(name, p->name, strlen(name)) == 0)
+			return p;
+	}
+	shell_error(ERR_NO_SUCH_VAR, "%s", name);
+	return NULL;
+}
 
+/*Use setenv to export a built in shell variable to the system environment*/
+void export_sys_env_var(char *name)
+{
+	env_var_t *var = find_env_var(name);
+	char *upper_name;
+
+	if(!var)
+		return;
+
+	upper_name = to_upper_varname(var->name);
 	if(setenv(upper_name, var->var, 1) < 0){
 #ifdef DEBUG
 		report_error();
 #endif
 		shell_error(ERR_SHELL_ERROR, "Failed to set system environment \
 				variable from shell variable: %s\n", var->name);
+		return;
 	}
+	fprintf(stdout, "Exported %s->%s\n", name, upper_name);
 	free(upper_name);
 }
 
