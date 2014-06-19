@@ -51,9 +51,6 @@ typedef struct shell_t{
 	pid_t shell_pid;
 }shell_t;
 
-void shell_error(int err_type, const char *fmt, ...);
-char *copy_string(const char *str);
-unsigned int count_token(char *string, const char *token_string);
 void free_command(command_t *command);
 command_t *parse(char *line);
 int change_shell_dir(char *path);

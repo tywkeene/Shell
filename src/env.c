@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
@@ -10,6 +9,7 @@
 
 #include <shell.h>
 #include <env.h>
+#include <helpers.h>
 
 extern shell_t sh_status;
 
@@ -27,28 +27,6 @@ environ_t *initialize_environ(void)
 	environ_t *env = calloc(1, sizeof(environ_t));
 	env->vars = NULL;
 	return env;
-}
-
-char *to_lower_varname(char *name)
-{
-	int i;
-	char *out = calloc(1, strlen(name) + 1);
-	ssize_t len = strlen(name);
-
-	for(i = 0; i < len; i++)
-		out[i] = (char) tolower((int) name[i]);
-	return out;
-}
-
-char *to_upper_varname(char *name)
-{
-	int i;
-	char *out = calloc(1, strlen(name) + 1);
-	ssize_t len = strlen(name);
-
-	for(i = 0; i < len; i++)
-		out[i] = (char) toupper((int) name[i]);
-	return out;
 }
 
 /*use getenv to add a built in environment variable from a system environment variable*/
