@@ -21,6 +21,7 @@ signal(SIGQUIT, SIG_IGN); \
 signal(SIGTSTP, SIG_IGN); \
 signal(SIGTTIN, SIG_IGN); \
 signal(SIGTTOU, SIG_IGN); \
+signal(SIGTERM, SIG_IGN); \
 signal(SIGCHLD, SIG_DFL);
 
 /*Set most signals back to default for spawned processes*/
@@ -30,6 +31,7 @@ signal(SIGQUIT, SIG_DFL); \
 signal(SIGTSTP, SIG_DFL); \
 signal(SIGTTIN, SIG_DFL); \
 signal(SIGTTOU, SIG_DFL); \
+signal(SIGTERM, SIG_DFL);
 
 /*Error codes for shell_error() in shell.c*/
 #define ERR_NO_SUCH_VAR 0

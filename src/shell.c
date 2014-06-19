@@ -204,16 +204,16 @@ int main(int argc, char **argv)
 
 	while(sh_status.running){
 		input = gl_get_line(gl, get_env_var("prompt"), NULL, -1);
-		strip_newline(input);
 
-		if(!input){
-			shell_error(ERR_INVAL_INPUT, "Oops");
-			return -1;
-		}
-
-		if(strlen(input) < 1)
+		if(!input || *input == '\n')
 			continue;
 
+		if(strlen(input) < 1){
+			free(input);
+			continue;
+		}
+
+		strip_newline(input);
 		c = parse(input);
 		if(execute_builtins(c->array) == 1)
 			continue;
