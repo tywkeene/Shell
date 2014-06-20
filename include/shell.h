@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <signal.h>
+#include <libtecla.h>
 
 /*More verbose error reporting. Only works if DEBUG is defined at compile time*/
 #ifdef DEBUG
@@ -52,7 +53,7 @@ typedef struct shell_t{
 }shell_t;
 
 void free_command(command_t *command);
-command_t *parse(char *line);
+command_t *parse(char *line, GetLine *gl);
 int change_shell_dir(char *path);
 int execute_builtins(char **input);
 int execute_command(command_t *c);

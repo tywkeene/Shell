@@ -29,7 +29,7 @@ void free_command(command_t *command)
 	return;
 }
 
-command_t *parse(char *line)
+command_t *parse(char *line, GetLine *gl)
 {
 	unsigned int i;
 	char *cur_token;
@@ -37,6 +37,7 @@ command_t *parse(char *line)
 	command_t *ret = malloc(sizeof(command_t));
 
 	strip_newline(line);
+	gl_append_history(gl, line);
 
 	ret->elements = count_token(line, " ");
 	ret->array = calloc((ret->elements + 1), sizeof(char *));
@@ -102,7 +103,7 @@ int execute_builtins(char **input)
 			fprintf(stdout, "%s ", builtins[i]);
 		fprintf(stdout, "\n");
 		return 1;
-	case 6:
+	case 6: /*export-var*/
 		if(!input[1]){
 			fprintf(stdout, "Usage: %s <name of built-in var to export>\n", input[0]);
 			return 1;
@@ -152,7 +153,7 @@ int main(int argc, char **argv)
 {
 	char *input;
 	command_t *c;
-	GetLine *gl = new_GetLine(1024, 0);
+	GetLine *gl = new_GetLine(1024, DEFAULT_HISTORY_MEM);
 
 	if(!gl){
 		shell_error(ERR_SHELL_ERROR, "Could not initialize libtecla");
@@ -176,7 +177,8 @@ int main(int argc, char **argv)
 		if(!input || *input == '\n')
 			continue;
 
-		c = parse(input);
+		c = parse(input, gl);
+
 		if(execute_builtins(c->array) == 1)
 			continue;
 		execute_command(c);

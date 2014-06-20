@@ -6,6 +6,8 @@
 #define DEFAULT_PATH 	"/bin:/usr/bin/:/sbin/:/usr/local/bin"
 #define DEFAULT_HOME 	"/"
 
+#define DEFAULT_HISTORY_MEM 100
+
 typedef struct env_var_t{
 	char *name;
 	char *var;
