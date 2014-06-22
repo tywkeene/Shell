@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <signal.h>
+#include <termios.h>
 #include <libtecla.h>
 
 /*More verbose error reporting. Only works if DEBUG is defined at compile time*/
@@ -47,9 +48,13 @@ typedef struct command_t{
 }command_t;
 
 typedef struct shell_t{
+	pid_t pid;
+	pid_t pgid;
 	bool running;
+	int terminal;
+	int is_interactive;
 	struct environ_t *env;
-	pid_t shell_pid;
+	struct termios tmodes;
 }shell_t;
 
 void free_command(command_t *command);

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <errno.h>
+#include <termios.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdbool.h>
@@ -14,7 +15,7 @@
 #include <env.h>
 #include <helpers.h>
 
-shell_t sh_status = {true, NULL, 0};
+shell_t sh_status = {0, 0, true, 0, 0, NULL, 0};
 
 void free_command(command_t *command)
 {
@@ -139,7 +140,7 @@ int execute_command(command_t *c)
 		}
 	}
 
-	setpgid(pid, sh_status.shell_pid);
+	setpgid(pid, sh_status.pid);
 
 	while(wait(&status) != pid)
 		;
@@ -149,16 +150,47 @@ int execute_command(command_t *c)
 	return 0;
 }
 
+int initialize_shell(void)
+{
+	sh_status.terminal = STDIN_FILENO;
+	sh_status.is_interactive = isatty(sh_status.terminal);
+
+	if(sh_status.is_interactive){
+		sh_status.pgid = getpgrp();
+		while(tcgetpgrp(sh_status.terminal) != sh_status.pgid)
+			kill(-sh_status.pgid, SIGTTIN);
+
+		SET_SIGNALS_SHELL
+
+		sh_status.pid = getpid();
+		sh_status.pgid = getpid();
+
+		if(sh_status.pgid != getpgrp()){
+			if(setpgid(sh_status.pid, sh_status.pgid) < 0){
+#ifdef DEBUG
+				report_error();
+#endif
+				shell_error(ERR_SHELL_ERROR, "Failed to put shell in its own process group,"
+						" cannot continue\n");
+				return -1;
+			}
+		}
+
+		tcsetpgrp(sh_status.terminal, sh_status.pgid);
+		tcgetattr(sh_status.terminal, &sh_status.tmodes);
+	}else
+		return -1;
+	return 0;
+}
+
 int main(int argc, char **argv)
 {
 	char *input;
 	command_t *c;
 	GetLine *gl = new_GetLine(1024, DEFAULT_HISTORY_MEM);
 
-	if(!gl){
-		shell_error(ERR_SHELL_ERROR, "Could not initialize libtecla");
+	if(initialize_shell() < 0)
 		return -1;
-	}
 
 	sh_status.env = initialize_environ();
 
@@ -176,10 +208,10 @@ int main(int argc, char **argv)
 
 	add_env_var("prompt", DEFAULT_PROMPT);
 
-	sh_status.shell_pid = getpid();
-	tcsetpgrp(STDIN_FILENO, sh_status.shell_pid);
-
-	SET_SIGNALS_SHELL
+	if(!gl){
+		shell_error(ERR_SHELL_ERROR, "Could not initialize libtecla");
+		return -1;
+	}
 
 	while(sh_status.running){
 		input = gl_get_line(gl, get_env_var("prompt"), NULL, -1);
