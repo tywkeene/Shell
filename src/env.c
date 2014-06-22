@@ -79,7 +79,7 @@ void export_sys_env_var(char *name)
 				variable from shell variable: %s\n", var->name);
 		return;
 	}
-	fprintf(stdout, "Exported %s->%s\n", name, upper_name);
+	cprint_msg(stdout, green, "Exported %s->%s\n", name, upper_name);
 	free(upper_name);
 }
 

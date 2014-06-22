@@ -17,6 +17,22 @@
 
 extern shell_t sh_status;
 
+void cprint_msg(FILE *stream, cprint_color_t color, const char *fmt, ...)
+{
+	va_list args;
+	static const char *cprint_colors[] = {"\x1B[0m",
+		"\x1B[31m","\x1B[32m","\x1B[33m","\x1B[34m",
+		"\x1B[35m","\x1B[36m","\x1B[37m"};
+
+	va_start(args, fmt);
+	fflush(stream);
+	fprintf(stream, "%s", cprint_colors[color]);
+	vfprintf(stream, fmt, args);
+	fprintf(stream, "%s", cprint_colors[normal]);
+	fflush(stream);
+	va_end(args);
+}
+
 void shell_error(int err_type, const char *fmt, ...)
 {
 	static const char *err_str[] = {"No such environment variable", "No such command", "No such file",
@@ -25,7 +41,7 @@ void shell_error(int err_type, const char *fmt, ...)
 	va_start(args, fmt);
 	fflush(stdout);
 	fflush(stderr);
-	fprintf(stderr, "Shell error %d: ", err_type);
+	cprint_msg(stderr, red, "Shell error %d: ", err_type);
 	fprintf(stderr, "%s: ", err_str[err_type]);
 	vfprintf(stderr, fmt, args);
 	fprintf(stderr, "\n");

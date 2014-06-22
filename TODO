@@ -24,11 +24,10 @@ long term:
 
 - Scripting language? Bash(like)? Lua? Lisp? (lol jk)
 
-- Colors!
-
 DONE:
 - built-in environment variable subsitution
 	i.e echo $user would echo the user name instead of $user
 - Better error reporting for non-debug builds
 	i.e no 'error in file: function() line 1337'
 - Code cleanup, move things to their own files if necessary
+- Colors!
