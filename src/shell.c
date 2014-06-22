@@ -129,7 +129,7 @@ int execute_command(command_t *c)
 	}
 
 	if(pid == 0){
-		SET_SIGNALS_PROC
+		SET_SIGNALS_PROC;
 		if(execvp(*c->array, c->array) == -1){
 			shell_error(ERR_NO_SUCH_COM, "%s", *c->array);
 #ifdef DEBUG
@@ -145,7 +145,7 @@ int execute_command(command_t *c)
 	while(wait(&status) != pid)
 		;
 
-	SET_SIGNALS_SHELL
+	SET_SIGNALS_SHELL;
 
 	return 0;
 }
@@ -160,7 +160,7 @@ int initialize_shell(void)
 		while(tcgetpgrp(sh_status.terminal) != sh_status.pgid)
 			kill(-sh_status.pgid, SIGTTIN);
 
-		SET_SIGNALS_SHELL
+		SET_SIGNALS_SHELL;
 
 		sh_status.pid = getpid();
 		sh_status.pgid = getpid();
