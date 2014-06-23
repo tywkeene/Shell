@@ -98,11 +98,11 @@ int execute_builtins(char **input)
 			fprintf(stdout, "Usage: %s <new var name> <new var value>\n", input[0]);
 			return 1;
 		}
-		add_env_var(input[1], input[2]);
+		add_env_var(input[1], input[2], true, false);
 		return 1;
 	case 5: /*show-builtins*/
 		for(i = 0; i < sizeof_array(builtins); i++)
-			fprintf(stdout, "%s ", builtins[i]);
+			fprintf(stdout, " %s ", builtins[i]);
 		fprintf(stdout, "\n");
 		return 1;
 	case 6: /*export-var*/
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 	TRY_SYS_VAR_IMPORT("home", DEFAULT_HOME);
 	TRY_SYS_VAR_IMPORT("path", DEFAULT_PATH);
 
-	add_env_var("prompt", DEFAULT_PROMPT);
+	add_env_var("prompt", DEFAULT_PROMPT, false, false);
 
 	if(!gl){
 		shell_error(ERR_SHELL_ERROR, "Could not initialize libtecla");

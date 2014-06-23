@@ -12,10 +12,12 @@
  * system*/
 #define TRY_SYS_VAR_IMPORT(varname, def) if(import_sys_env_var(varname) < 0){ \
 	shell_error(ERR_SHELL_ERROR, "Could not import %s from system, using default: %s\n", varname, def); \
-	add_env_var(varname, def); \
+	add_env_var(varname, def, false, true); \
 			}
 
 typedef struct env_var_t{
+	bool imported;
+	bool user_set;
 	char *name;
 	char *var;
 	struct env_var_t *next;
@@ -30,7 +32,7 @@ environ_t *initialize_environ(void);
 void export_sys_env_var(char *name);
 int import_sys_env_var(char *name);
 env_var_t *find_env_var(char *name);
-void add_env_var(char *name, char *var);
+void add_env_var(char *name, char *var, bool is_user_set, bool is_import);
 int set_env_var(char *name, char *set);
 char *get_env_var(char *name);
 char *do_var_name_substitution(char *name);

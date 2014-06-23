@@ -43,7 +43,7 @@ int import_sys_env_var(char *name)
 		free(upper_name);
 		return -1;
 	}else
-		add_env_var(name, sys_var);
+		add_env_var(name, sys_var, false, true);
 	free(upper_name);
 	return 0;
 }
@@ -83,10 +83,13 @@ void export_sys_env_var(char *name)
 	free(upper_name);
 }
 
-void add_env_var(char *name, char *var)
+void add_env_var(char *name, char *var, bool is_user_set, bool is_import)
 {
 	env_var_t *p = sh_status.env->vars;
 	env_var_t *new = alloc_env_var(name, var);
+
+	new->imported = is_import;
+	new->user_set = is_user_set;
 
 	if(p == NULL){
 		p = new;
@@ -113,6 +116,8 @@ int set_env_var(char *name, char *set)
 	if(p){
 		free(p->var);
 		p->var = copy_string(set);
+		p->imported = false;
+		p->user_set = true;
 	}else{
 		shell_error(ERR_NO_SUCH_VAR, "%s", name);
 		return -1;
@@ -153,6 +158,12 @@ void show_env(void)
 {
 	env_var_t *p = sh_status.env->vars;
 	while(p != NULL){
+		if(!p->user_set && !p->imported)
+			cprint_msg(stdout, green, "[DEFAULT] ");
+		if(p->user_set)
+			cprint_msg(stdout, red, "[USER SET] ");
+		if(p->imported)
+			cprint_msg(stdout, green, "[IMPORTED] ");
 		fprintf(stdout, "%s:%s\n", p->name, p->var);
 		p = p->next;
 	}
