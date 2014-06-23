@@ -15,6 +15,7 @@
 #include <env.h>
 #include <helpers.h>
 
+/*pid, pgid, running, terminal, is_interactive, env, tmodes*/
 shell_t sh_status = {0, 0, true, 0, 0, NULL, 0};
 
 void free_command(command_t *command)
@@ -123,7 +124,7 @@ int execute_command(command_t *c)
 	if((pid = fork()) == -1){
 		shell_error(ERR_SHELL_ERROR, "Could not fork %s", *c->array);
 #ifdef DEBUG
-		report_error();
+		debug_error_info();
 #endif
 		return -1;
 	}
@@ -133,7 +134,7 @@ int execute_command(command_t *c)
 		if(execvp(*c->array, c->array) == -1){
 			shell_error(ERR_NO_SUCH_COM, "%s", *c->array);
 #ifdef DEBUG
-			report_error();
+			debug_error_info();
 #endif
 			abort();
 			return -1;
@@ -168,7 +169,7 @@ int initialize_shell(void)
 		if(sh_status.pgid != getpgrp()){
 			if(setpgid(sh_status.pid, sh_status.pgid) < 0){
 #ifdef DEBUG
-				report_error();
+				debug_error_info();
 #endif
 				shell_error(ERR_SHELL_ERROR, "Failed to put shell in its own process group,"
 						" cannot continue\n");

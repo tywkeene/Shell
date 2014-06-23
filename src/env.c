@@ -36,7 +36,7 @@ int import_sys_env_var(char *name)
 	char *upper_name = to_upper_varname(name);
 	if((sys_var = getenv(upper_name)) == NULL){
 #ifdef DEBUG
-		report_error();
+		debug_error_info();
 #endif
 		shell_error(ERR_SHELL_ERROR, "Failed to import system \
 				environment variable %s\n", name);
@@ -73,7 +73,7 @@ void export_sys_env_var(char *name)
 	upper_name = to_upper_varname(var->name);
 	if(setenv(upper_name, var->var, 1) < 0){
 #ifdef DEBUG
-		report_error();
+		debug_error_info();
 #endif
 		shell_error(ERR_SHELL_ERROR, "Failed to set system environment \
 				variable from shell variable: %s\n", var->name);
