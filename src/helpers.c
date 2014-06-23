@@ -36,7 +36,7 @@ void cprint_msg(FILE *stream, cprint_color_t color, const char *fmt, ...)
 void shell_error(int err_type, const char *fmt, ...)
 {
 	static const char *err_str[] = {"No such environment variable", "No such command", "No such file",
-		"Invalid input", "Shell error"};
+		"Invalid input", "Shell error", "Variable already exists"};
 	va_list args;
 
 	if(!get_shell_flag(SHELL_FLAG_REPORT))

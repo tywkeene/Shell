@@ -42,6 +42,7 @@ signal(SIGTERM, SIG_DFL);
 #define ERR_NO_SUCH_FIL 2
 #define ERR_INVAL_INPUT 3
 #define ERR_SHELL_ERROR 4
+#define ERR_VAR_EXISTS  5
 
 /*Shell status flags*/
 #define SHELL_FLAG_RUNNING 	1 /*Is the shell running?*/

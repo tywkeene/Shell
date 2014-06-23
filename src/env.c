@@ -86,7 +86,19 @@ void export_sys_env_var(char *name)
 void add_env_var(char *name, char *var, bool is_user_set, bool is_import)
 {
 	env_var_t *p = sh_status.env->vars;
-	env_var_t *new = alloc_env_var(name, var);
+	env_var_t *new;
+
+	/*Turn off error reporting in case we don't already have a variable by
+	 * this name to avoid confusion*/
+	set_shell_flag_off(SHELL_FLAG_REPORT);
+	if(find_env_var(name)){
+		set_shell_flag_on(SHELL_FLAG_REPORT);
+		shell_error(ERR_VAR_EXISTS, "'%s'", name);
+		return;
+	}
+	set_shell_flag_on(SHELL_FLAG_REPORT);
+
+	new = alloc_env_var(name, var);
 
 	new->imported = is_import;
 	new->user_set = is_user_set;
