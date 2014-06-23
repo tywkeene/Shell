@@ -8,7 +8,8 @@
 
 /*More verbose error reporting. Only works if DEBUG is defined at compile time*/
 #ifdef DEBUG
-#define debug_error_info() fprintf(stderr, "[%s: %s():%d] %s\n", __FILE__, \
+#define debug_error_info() if(get_shell_flag(SHELL_FLAG_REPORT)) \
+	fprintf(stderr, "[%s: %s():%d] %s\n", __FILE__, \
 		__FUNCTION__, \
 		__LINE__, \
 		strerror(errno));
@@ -42,21 +43,31 @@ signal(SIGTERM, SIG_DFL);
 #define ERR_INVAL_INPUT 3
 #define ERR_SHELL_ERROR 4
 
+/*Shell status flags*/
+#define SHELL_FLAG_RUNNING 	1 /*Is the shell running?*/
+#define SHELL_FLAG_REPORT 	2 /*Should we report errors?
+				    (works on both shell_error() and report_error())*/
+
+typedef unsigned char shell_flags_t;
+
 typedef struct command_t{
 	char **array;
 	unsigned int elements;
 }command_t;
 
 typedef struct shell_t{
+	shell_flags_t flags;
 	pid_t pid;
 	pid_t pgid;
-	bool running;
 	int terminal;
 	int is_interactive;
 	struct environ_t *env;
 	struct termios tmodes;
 }shell_t;
 
+void set_shell_flag_off(unsigned char flag);
+void set_shell_flag_on(unsigned char flag);
+bool get_shell_flag(unsigned char flag);
 void free_command(command_t *command);
 command_t *parse(char *line, GetLine *gl);
 int change_shell_dir(char *path);

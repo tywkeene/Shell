@@ -38,6 +38,10 @@ void shell_error(int err_type, const char *fmt, ...)
 	static const char *err_str[] = {"No such environment variable", "No such command", "No such file",
 		"Invalid input", "Shell error"};
 	va_list args;
+
+	if(!get_shell_flag(SHELL_FLAG_REPORT))
+		return;
+
 	va_start(args, fmt);
 	fflush(stdout);
 	fflush(stderr);

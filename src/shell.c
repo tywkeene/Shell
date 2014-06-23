@@ -18,6 +18,21 @@
 /*pid, pgid, running, terminal, is_interactive, env, tmodes*/
 shell_t sh_status = {0, 0, true, 0, 0, NULL, 0};
 
+void set_shell_flag_off(unsigned char flag)
+{
+	sh_status.flags &= ~(1 << flag);
+}
+
+void set_shell_flag_on(unsigned char flag)
+{
+	sh_status.flags |= (1 << flag);
+}
+
+bool get_shell_flag(unsigned char flag)
+{
+	return sh_status.flags & (1 << flag);
+}
+
 void free_command(command_t *command)
 {
 	int i;
@@ -81,7 +96,7 @@ int execute_builtins(char **input)
 		change_shell_dir(input[1]);
 		return 1;
 	case 1: /*exit*/
-		sh_status.running = false;
+		set_shell_flag_off(SHELL_FLAG_RUNNING);
 		return 1;
 	case 2: /*show-env*/
 		show_env();
@@ -205,7 +220,10 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	while(sh_status.running){
+	set_shell_flag_on(SHELL_FLAG_REPORT);
+	set_shell_flag_on(SHELL_FLAG_RUNNING);
+
+	while(get_shell_flag(SHELL_FLAG_RUNNING)){
 		input = gl_get_line(gl, get_env_var("prompt"), NULL, -1);
 
 		if(!input || *input == '\n')
