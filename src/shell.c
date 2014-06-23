@@ -194,17 +194,8 @@ int main(int argc, char **argv)
 
 	sh_status.env = initialize_environ();
 
-	if(import_sys_env_var("home") < 0){
-		shell_error(ERR_SHELL_ERROR, "Could not import home environment variable from system\n"
-				"Using default: %s\n", DEFAULT_HOME);
-		add_env_var("home", DEFAULT_HOME);
-	}
-
-	if(import_sys_env_var("path") < 0){
-		shell_error(ERR_SHELL_ERROR, "Could not import path environment variable from system\n"
-				"Using default: %s\n", DEFAULT_PATH);
-		add_env_var("path", DEFAULT_PATH);
-	}
+	TRY_SYS_VAR_IMPORT("home", DEFAULT_HOME);
+	TRY_SYS_VAR_IMPORT("path", DEFAULT_PATH);
 
 	add_env_var("prompt", DEFAULT_PROMPT);
 

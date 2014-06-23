@@ -8,6 +8,13 @@
 
 #define DEFAULT_HISTORY_MEM 100
 
+/*Try to import a system environment variable, use def if we can't import from
+ * system*/
+#define TRY_SYS_VAR_IMPORT(varname, def) if(import_sys_env_var(varname) < 0){ \
+	shell_error(ERR_SHELL_ERROR, "Could not import %s from system, using default: %s\n", varname, def); \
+	add_env_var(varname, def); \
+			}
+
 typedef struct env_var_t{
 	char *name;
 	char *var;
