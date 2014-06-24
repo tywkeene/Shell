@@ -121,11 +121,13 @@ int execute_builtins(char **input)
 		fprintf(stdout, "\n");
 		return 1;
 	case 6: /*export-var*/
-		if(!input[1]){
-			fprintf(stdout, "Usage: %s <name of built-in var to export>\n", input[0]);
-			return 1;
+		if(get_shell_flag(SHELL_FLAG_EXPORT)){
+			if(!input[1]){
+				fprintf(stdout, "Usage: %s <name of built-in var to export>\n", input[0]);
+				return 1;
+			}
+			export_sys_env_var(input[1]);
 		}
-		export_sys_env_var(input[1]);
 		return 1;
 	}
 	return 0;
@@ -222,6 +224,7 @@ int main(int argc, char **argv)
 
 	set_shell_flag_on(SHELL_FLAG_REPORT);
 	set_shell_flag_on(SHELL_FLAG_RUNNING);
+	set_shell_flag_on(SHELL_FLAG_EXPORT);
 
 	while(get_shell_flag(SHELL_FLAG_RUNNING)){
 		input = gl_get_line(gl, get_env_var("prompt"), NULL, -1);

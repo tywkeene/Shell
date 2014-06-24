@@ -45,9 +45,10 @@ signal(SIGTERM, SIG_DFL);
 #define ERR_VAR_EXISTS  5
 
 /*Shell status flags*/
-#define SHELL_FLAG_RUNNING 	1 /*Is the shell running?*/
+#define SHELL_FLAG_RUNNING 	1 /*Is the shell running? Obviously 1 unless we get the exit command*/
 #define SHELL_FLAG_REPORT 	2 /*Should we report errors?
 				    (works on both shell_error() and report_error())*/
+#define SHELL_FLAG_EXPORT 	3 /*Should we allow exporting built in variables to the system environment?*/
 
 typedef unsigned char shell_flags_t;
 
