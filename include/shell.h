@@ -25,14 +25,6 @@ signal(SIGTTIN, SIG_DFL); \
 signal(SIGTTOU, SIG_DFL); \
 signal(SIGTERM, SIG_DFL);
 
-/*Error codes for shell_error() in shell.c*/
-#define ERR_NO_SUCH_VAR 0
-#define ERR_NO_SUCH_COM 1
-#define ERR_NO_SUCH_FIL 2
-#define ERR_INVAL_INPUT 3
-#define ERR_SHELL_ERROR 4
-#define ERR_VAR_EXISTS  5
-
 /*Shell status flags*/
 #define SHELL_FLAG_RUNNING 	1 /*Is the shell running? Obviously 1 unless we get the exit command*/
 #define SHELL_FLAG_REPORT 	2 /*Should we report errors?
