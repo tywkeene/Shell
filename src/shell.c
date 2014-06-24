@@ -15,8 +15,7 @@
 #include <env.h>
 #include <helpers.h>
 
-/*pid, pgid, running, terminal, is_interactive, env, tmodes*/
-shell_t sh_status = {0, 0, true, 0, 0, NULL, 0};
+shell_t sh_status;
 
 void set_shell_flag_off(unsigned char flag)
 {
