@@ -6,17 +6,6 @@
 #include <termios.h>
 #include <libtecla.h>
 
-/*More verbose error reporting. Only works if DEBUG is defined at compile time*/
-#ifdef DEBUG
-#define debug_error_info() if(get_shell_flag(SHELL_FLAG_REPORT)) \
-	fprintf(stderr, "[%s: %s():%d] %s\n", __FILE__, \
-		__FUNCTION__, \
-		__LINE__, \
-		strerror(errno));
-#endif
-
-#define sizeof_array(x) (sizeof(x) / sizeof(*x))
-
 /*Ignore most signals since we're an interactive shell*/
 #define SET_SIGNALS_SHELL \
 	signal(SIGINT, SIG_IGN); \
