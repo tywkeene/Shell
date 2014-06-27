@@ -84,7 +84,7 @@ int change_shell_dir(char *path)
 int execute_builtins(char **input)
 {
 	int i;
-	static const char *builtins[] = {"cd", "exit", "show-var", "edit-var", "add-var", "show-builtins",
+	static const char *builtins[] = {"cd", "exit", "show-vars", "edit-var", "add-var", "show-builtins",
 		"export-var"};
 
 	for(i = 0; i < sizeof_array(builtins); i++)
@@ -97,7 +97,7 @@ int execute_builtins(char **input)
 	case 1: /*exit*/
 		set_shell_flag_off(SHELL_FLAG_RUNNING);
 		return 1;
-	case 2: /*show-var*/
+	case 2: /*show-vars*/
 		show_env();
 		return 1;
 	case 3: /*edit-var*/
