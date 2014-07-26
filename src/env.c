@@ -139,14 +139,9 @@ int set_env_var(char *name, char *set)
 
 char *get_env_var(char *name)
 {
-	env_var_t *p = sh_status.env->vars;
-	while(p != NULL){
-		if(strncmp(p->name, name, strlen(p->name) + 1) == 0)
-			break;
-		p = p->next;
-	}
-	if(p == NULL)
-		shell_error(ERR_NO_SUCH_VAR, "%s", name);
+	env_var_t *p;
+	if((p = find_env_var(name)) == NULL)
+		return NULL;
 	return p->var;
 }
 
