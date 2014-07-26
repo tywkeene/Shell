@@ -48,19 +48,6 @@ int import_sys_env_var(char *name)
 	return 0;
 }
 
-env_var_t *find_env_var(char *name)
-{
-	env_var_t *p;
-	env_var_t *next;
-	for(p = sh_status.env->vars; p != NULL; p = next){
-		next = p->next;
-		if(strncmp(name, p->name, strlen(name)) == 0)
-			return p;
-	}
-	shell_error(ERR_NO_SUCH_VAR, "%s", name);
-	return NULL;
-}
-
 /*Use setenv to export a built in shell variable to the system environment*/
 void export_sys_env_var(char *name)
 {
@@ -82,6 +69,20 @@ void export_sys_env_var(char *name)
 	cprint_msg(stdout, green, "Exported %s->%s\n", name, upper_name);
 	free(upper_name);
 }
+
+env_var_t *find_env_var(char *name)
+{
+	env_var_t *p;
+	env_var_t *next;
+	for(p = sh_status.env->vars; p != NULL; p = next){
+		next = p->next;
+		if(strncmp(name, p->name, strlen(name)) == 0)
+			return p;
+	}
+	shell_error(ERR_NO_SUCH_VAR, "%s", name);
+	return NULL;
+}
+
 
 void add_env_var(char *name, char *var, bool is_user_set, bool is_import)
 {
