@@ -171,7 +171,7 @@ void show_env(void)
 			cprint_msg(stdout, red, "[USER SET] ");
 		if(p->imported)
 			cprint_msg(stdout, green, "[IMPORTED] ");
-		fprintf(stdout, "%s:%s\n", p->name, p->var);
+		fprintf(stdout, "%s: '%s'\n", p->name, p->var);
 		p = p->next;
 	}
 }
