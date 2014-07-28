@@ -92,7 +92,12 @@ int execute_builtins(char **input)
 			break;
 	switch(i){
 	case 0: /*cd*/
-		change_shell_dir(input[1]);
+		if(change_shell_dir(input[1]) != 0){
+#ifdef DEBUG
+			debug_error_info();
+#endif
+			shell_error(ERR_SHELL_ERROR, "Failed to cd to '%s'", input[1]);
+		}
 		return 1;
 	case 1: /*exit*/
 		set_shell_flag_off(SHELL_FLAG_RUNNING);
