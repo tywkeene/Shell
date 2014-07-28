@@ -6,6 +6,8 @@
 #include <termios.h>
 #include <libtecla.h>
 
+#include <builtins.h>
+
 /*Ignore most signals since we're an interactive shell*/
 #define SET_SIGNALS_SHELL \
 	signal(SIGINT, SIG_IGN); \
@@ -33,11 +35,6 @@ signal(SIGTERM, SIG_DFL);
 
 typedef unsigned char shell_flags_t;
 
-typedef struct command_t{
-	char **array;
-	unsigned int elements;
-}command_t;
-
 typedef struct shell_t{
 	shell_flags_t flags;
 	pid_t pid;
@@ -51,10 +48,6 @@ typedef struct shell_t{
 void set_shell_flag_off(unsigned char flag);
 void set_shell_flag_on(unsigned char flag);
 bool get_shell_flag(unsigned char flag);
-void free_command(command_t *command);
-command_t *parse(char *line, GetLine *gl);
-int change_shell_dir(char *path);
-int execute_builtins(char **input);
-int execute_command(command_t *c);
+int execute_command(struct command_t *c);
 
 #endif
